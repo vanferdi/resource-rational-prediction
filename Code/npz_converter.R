@@ -21,6 +21,13 @@ np <- import("numpy")
 npz <- np$load("./Data/NoisyPeriodic_PRA.npz")
 dpz <- np$load("./Data/DoubleProcess_PRA.npz")
 epz <- np$load("./Data/EvenProcess_PRA.npz")
+dis <- np$load("./Data/PRA_Distances.npz")
+
+# the download links are:
+# https://github.com/smarzen/resource-rational-prediction/blob/main/NoisyPeriodic_PRA.npz
+# https://github.com/smarzen/resource-rational-prediction/blob/main/Double_PRA.npz
+# https://github.com/smarzen/resource-rational-prediction/blob/main/EvenProcess_PRA.npz
+# https://github.com/smarzen/resource-rational-prediction/blob/main/PRA_Distances.npz
 
 ##############################################################################
 # access the data in the npz files
@@ -52,6 +59,24 @@ length(PRA_accuracy)  # 999
 length(exp_rate)      # 44 - that's the number of sessions completed in NP
 length(exp_accuracy)  # 44
 
+# this file contains the distance of participants' session coordinates
+# from the curve along 3 dimensions
+dis$files
+
+# this is the distance along the accuracy dimension (y-axis)
+PRA_distance <- dis$f[["distances_a"]]
+
+# we decided a-priori to analyze distance along the accuracy dimension
+# but Sarah has included these other distance measures as well
+dis$f[["distances_r"]]  # is distance along the rate dimension (x-axis)
+dis$f[["distances_orthogonal"]]  # is orthogonal distance (to nearest x,y point on the line)
+
+# PRA_distance contains 140 values, one per session, maintaining the same row
+# order as the entries in experiment.csv, so it can be added on as a new column
+
+# PRA_distance has already been added to experiment.csv, check that they are identical
+# round() is used because numeric precision changes when data are read in from a csv
+unique(round(df$PRA_distance,10) == round(PRA_distance,10))  # should be TRUE
 
 ##############################################################################
 # put everything into an Rdata file
@@ -87,6 +112,7 @@ rate <- epz$f[["R_participant"]]
 accuracy <- epz$f[["D_participant"]]
 ep_exp <- data.frame(rate,accuracy)
 
+# save these all in one Rdata file called "PRA.Rdata"
 save(np_pra,np_exp,dp_pra,dp_exp,ep_pra,ep_exp,file="./Data/PRA.Rdata")
 
 # here's how to load it back in
