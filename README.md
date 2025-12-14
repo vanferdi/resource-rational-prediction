@@ -39,6 +39,10 @@ What's in each file:
 
 `functions.R` This file contains some support functions I wrote, which get loaded by the files above.
 
+'Controls.ipynb' This file contains Python scripts to generate rates and accuracies for controls as in Figure 1 for ngram strategies with and without probability matching, LSTM strategies with and without probability matching, always-predict-most-common strategies, and random strategies. The outputs of these files were sent to 'Figure1.ipynb' below.
+
+'Figure1.ipynb' This file creates Figure 1, bottom panel, as seen in the Results section from the aforementioned '.npz' files in Sarah's repository and the rates and accuracies from `Controls.ipynb'.
+
 
 ### Plots
 
